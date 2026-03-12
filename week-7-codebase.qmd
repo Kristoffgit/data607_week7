@@ -1,0 +1,78 @@
+---
+title: "Week 7 - HTML and JSON"
+author: "Kristoff Oliphant"
+format: html
+editor: visual
+---
+
+## Introduction
+
+It is now week 7 and the assignment this week will involve HTML and JSON. This assignment is considered a warm up exercise to help us get familiar with the HTML and JSON file formats, and using packages to read these data formats for downstream use in R data frames
+
+## Planned Workflow
+
+For my planned workflow, I selected three books involving data science. I chose three books with multiple authors and for each book, I recorded the title, authors, and two to three additional attributes such as the publication year, publisher and ISBN. With the information from the books I manually created two textedit files, one HTML file containing a table with the book data and changed its file type to html. I also used a textedit file and manually created a JSON file with the same data as the html but with the file type .json. I’ll open and load both the html and json files in separate R dataframes, and use tidyverse and dplyr to manipulate the data into a readable format in R. I’ll load the data using rvest to read the html and jsonlite for the json file, ensuring it’s formatted consistently for an identical comparison.
+
+## Anticipated Challenges
+
+A challenge I anticipate facing is making sure the syntax in both files are correct to be loaded correctly into R. I manually created these and if I didn’t follow the logic correctly in each of its respective files, my code in R has a high chance of failing if it's incorrect. Since both files use a unique syntax there’s a fair chance both can load into R in different ways that don’t match each other.
+
+```{r}
+library(rvest)
+library(jsonlite)
+library(tidyverse)
+```
+
+```{r}
+html_raw <- read_html("https://raw.githubusercontent.com/Kristoffgit/data607_week7/refs/heads/main/books.html")
+html_df <- html_raw %>%
+  html_table() %>%
+  .[[1]]
+```
+
+```{r}
+print(html_df)
+```
+
+```{r}
+json_raw <- fromJSON("https://raw.githubusercontent.com/Kristoffgit/data607_week7/refs/heads/main/books.json")
+json_df <- as.data.frame(json_raw$books)
+```
+
+```{r}
+print(json_df)
+```
+
+```{r}
+str(html_df)
+str(json_df)
+```
+
+```{r}
+json_df <- json_df %>%
+  mutate(Authors = sapply(Authors, paste, collapse = ", ")) %>%
+  rename(Author = Authors)
+```
+
+```{r}
+html_df <- html_df %>% arrange(Title)
+json_df <- json_df %>% arrange(Title)
+```
+
+```{r}
+is_identical <- identical(html_df, json_df)
+```
+
+```{r}
+print(is_identical)
+```
+
+```{r}
+if(!is_identical) {
+  all.equal(html_df, json_df)
+}
+```
+
+**Conclusion**
+
+After comparing both dataframes, the identical function returned that it was FALSE. From what I notice, the data frames have some differences in their object attributes and string formatting. The string mismatch is because Cetinkaya-Rundel's name has a special character in C for JSON and has a regular C in HTML.
