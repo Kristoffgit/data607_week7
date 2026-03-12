@@ -1,0 +1,25 @@
+{
+"books": [
+{
+"Title": "R for Data Science (2e)",
+"Authors": ["Hadley Wickham", "Mine Çetinkaya-Rundel", "Garrett Grolemund"],
+"Publisher": "O'Reilly Media",
+"ISBN-13": "978-1492097402",
+"Year": 2023
+},
+{
+"Title": "Deep Learning",
+"Authors": ["Ian Goodfellow", "Yoshua Bengio", "Aaron Courville"],
+"Publisher": "MIT Press",
+"ISBN-13": "978-0262035613",
+"Year": 2016
+},
+{
+"Title": "An Introduction to Statistical Learning",
+"Authors": ["Gareth James", "Daniela Witten", "Trevor Hastie", "Rob Tibshirani"],
+"Publisher": "Springer",
+"ISBN-13": "978-1071614174",
+"Year": 2021
+}
+]
+}
